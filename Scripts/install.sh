@@ -1,9 +1,9 @@
 #!/bin/sh
 # EQRouter Linux installer.
 #
-# Downloads the latest static x86-64 binary from GitHub Releases and installs
-# it to /usr/local/bin (or ~/.local/bin without root). The binary is fully
-# static (musl) so it runs on any x86-64 Linux distro with no dependencies.
+# Downloads the latest static binary (x86-64 or ARM64) from GitHub Releases
+# and installs it to /usr/local/bin (or ~/.local/bin without root). The binary
+# is fully static (musl) so it runs on any Linux distro with no dependencies.
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/adv4sd-cyber/eqrouter-linux/main/Scripts/install.sh | sh
@@ -15,7 +15,6 @@
 set -eu
 
 REPO="adv4sd-cyber/eqrouter-linux"
-ASSET="eqrouter-linux-x86_64.tar.gz"
 VERSION="${EQROUTER_VERSION:-latest}"
 
 # --- checks ---------------------------------------------------------------
@@ -25,11 +24,15 @@ if [ "$OS" != "Linux" ]; then
     echo "error: this installer is for Linux (detected: $OS)." >&2
     exit 1
 fi
-if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "amd64" ]; then
-    echo "error: prebuilt binaries are x86-64 only (detected: $ARCH)." >&2
-    echo "Build from source instead: https://github.com/$REPO#build-from-source" >&2
-    exit 1
-fi
+case "$ARCH" in
+    x86_64|amd64)   ASSET="eqrouter-linux-x86_64.tar.gz" ;;
+    aarch64|arm64)  ASSET="eqrouter-linux-aarch64.tar.gz" ;;
+    *)
+        echo "error: prebuilt binaries are x86-64 and ARM64 only (detected: $ARCH)." >&2
+        echo "Build from source instead: https://github.com/$REPO#build-from-source" >&2
+        exit 1
+        ;;
+esac
 
 if command -v curl >/dev/null 2>&1; then
     fetch() { curl -fSL --progress-bar -o "$1" "$2"; }

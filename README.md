@@ -18,16 +18,17 @@ optional safety ceiling → soft-limiter, with input/output metering.
 
 ---
 
-## Install (Linux, x86-64)
+## Install (Linux, x86-64 or ARM64)
 
-One line — downloads the latest static binary from Releases (no dependencies,
-works on any distro):
+One line — detects your architecture and downloads the latest static binary
+from Releases (no dependencies, works on any distro):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/adv4sd-cyber/eqrouter-linux/main/Scripts/install.sh | sh
 ```
 
-Or manually: grab `eqrouter-linux-x86_64.tar.gz` from the
+Or manually: grab `eqrouter-linux-x86_64.tar.gz` or
+`eqrouter-linux-aarch64.tar.gz` from the
 [latest release](https://github.com/adv4sd-cyber/eqrouter-linux/releases/latest),
 extract, and put `eqrouter` anywhere on your `PATH`.
 
